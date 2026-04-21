@@ -1,0 +1,54 @@
+<?php
+
+namespace App\Http\Controllers\Api;
+
+use App\Http\Controllers\Controller;
+use App\Models\BlogPost;
+use Illuminate\Http\Request;
+
+class BlogController extends Controller
+{
+    public function index()
+    {
+        $posts = BlogPost::with('author')
+            ->where('is_published', true)
+            ->orderBy('published_at', 'desc')
+            ->get()
+            ->map(function ($post) {
+                return [
+                    'id' => $post->id,
+                    'title' => $post->title,
+                    'slug' => $post->slug,
+                    'featured_image_url' => $post->featured_image_url,
+                    'tags' => $post->tags,
+                    'author_name' => $post->author->display_name ?? 'VibeSpot',
+                    'published_at' => $post->published_at?->toDateString(),
+                    'excerpt' => str($post->body)->words(30)->toString(),
+                ];
+            });
+
+        return response()->json(['status' => 'success', 'data' => $posts]);
+    }
+
+    public function show(string $slug)
+    {
+        $post = BlogPost::with('author')
+            ->where('slug', $slug)
+            ->where('is_published', true)
+            ->firstOrFail();
+
+        return response()->json([
+            'status' => 'success',
+            'data' => [
+                'id' => $post->id,
+                'title' => $post->title,
+                'slug' => $post->slug,
+                'featured_image_url' => $post->featured_image_url,
+                'body' => $post->body,
+                'tags' => $post->tags,
+                'author_name' => $post->author->display_name ?? 'VibeSpot',
+                'published_at' => $post->published_at?->toDateString(),
+            ],
+        ]);
+    }
+}
