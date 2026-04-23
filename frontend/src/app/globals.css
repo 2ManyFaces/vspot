@@ -1,17 +1,17 @@
 @import "tailwindcss";
 
-/* ─── Brand Tokens ─── */
+/* ─── Brand Tokens (Modern Blue) ─── */
 @theme {
-  --color-brand-50: #f5f3ff;
-  --color-brand-100: #ede9fe;
-  --color-brand-200: #ddd6fe;
-  --color-brand-300: #c4b5fd;
-  --color-brand-400: #a78bfa;
-  --color-brand-500: #8b5cf6;
-  --color-brand-600: #7c3aed;
-  --color-brand-700: #6d28d9;
-  --color-brand-800: #5b21b6;
-  --color-brand-900: #4c1d95;
+  --color-brand-50: #f0f9ff;
+  --color-brand-100: #e0f2fe;
+  --color-brand-200: #bae6fd;
+  --color-brand-300: #7dd3fc;
+  --color-brand-400: #38bdf8;
+  --color-brand-500: #0ea5e9;
+  --color-brand-600: #0284c7;
+  --color-brand-700: #0369a1;
+  --color-brand-800: #075985;
+  --color-brand-900: #0c4a6e;
   --color-accent: #f43f5e;
 }
 
@@ -21,11 +21,13 @@
   --bg-page: #09090b;
   --bg-card: #111115;
   --bg-elevated: #18181c;
-  --border: rgba(255, 255, 255, 0.07);
-  --border-hover: rgba(139, 92, 246, 0.45);
+  --border: rgba(255, 255, 255, 0.04);
+  --border-hover: rgba(14, 165, 233, 0.35);
+  /* Updated to Blue 500 */
   --text-primary: #f1f5f9;
   --text-muted: #71717a;
-  --nav-bg: rgba(9, 9, 11, 0.80);
+  --nav-bg: #09090b;
+  /* Non-transparent */
 }
 
 /* ─── LIGHT MODE ─── */
@@ -34,11 +36,13 @@
   --bg-page: #f8f9fb;
   --bg-card: #ffffff;
   --bg-elevated: #f1f3f7;
-  --border: rgba(0, 0, 0, 0.09);
-  --border-hover: rgba(124, 58, 237, 0.35);
+  --border: rgba(0, 0, 0, 0.06);
+  --border-hover: rgba(2, 132, 199, 0.25);
+  /* Updated to Blue 600 */
   --text-primary: #0f0f14;
   --text-muted: #64748b;
-  --nav-bg: rgba(248, 249, 251, 0.85);
+  --nav-bg: #ffffff;
+  /* Non-transparent */
 }
 
 /* ─── Base ─── */
@@ -55,7 +59,7 @@ html {
 body {
   background-color: var(--bg-page);
   color: var(--text-primary);
-  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  font-family: 'Trip Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
   min-height: 100vh;
   transition: background-color 0.25s ease, color 0.15s ease;
   -webkit-font-smoothing: antialiased;
@@ -64,51 +68,47 @@ body {
 /* ─── Utilities ─── */
 .nav-glass {
   background-color: var(--nav-bg);
-  backdrop-filter: blur(20px) saturate(1.5);
-  -webkit-backdrop-filter: blur(20px) saturate(1.5);
   border-bottom: 1px solid var(--border);
+  /* removed backdrop-filter to emphasize non-transparency */
 }
 
 .surface {
   background-color: var(--bg-card);
-  border: 1px solid var(--border);
-  border-radius: 1rem;
+  border-radius: 1.25rem;
 }
 
 .surface-elevated {
   background-color: var(--bg-elevated);
-  border: 1px solid var(--border);
-  border-radius: 1rem;
+  border-radius: 1.25rem;
 }
 
 /* Card with smooth hover */
 .vcard {
   background-color: var(--bg-card);
-  border: 1px solid var(--border);
-  border-radius: 1rem;
+  border-radius: 1.25rem;
   overflow: hidden;
-  transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+  transition: transform 0.3s cubic-bezier(.22, .61, .36, 1), box-shadow 0.3s ease, border-color 0.3s ease;
 }
 
 .vcard:hover {
-  transform: translateY(-3px);
-  border-color: var(--border-hover);
-  box-shadow: 0 12px 36px rgba(0, 0, 0, 0.18), 0 0 0 1px rgba(139, 92, 246, 0.15);
+  transform: translateY(-4px);
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.25), 0 0 0 1px rgba(14, 165, 233, 0.12);
 }
 
 .light .vcard:hover {
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.10), 0 0 0 1px rgba(124, 58, 237, 0.18);
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.10), 0 0 0 1px rgba(2, 132, 199, 0.15);
 }
 
 .text-gradient {
-  background: linear-gradient(135deg, #a78bfa 0%, #f43f5e 100%);
+  background: linear-gradient(135deg, #38bdf8 0%, #0369a1 100%);
+  /* Blue gradient */
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
 }
 
 .light .text-gradient {
-  background: linear-gradient(135deg, #7c3aed 0%, #e11d48 100%);
+  background: linear-gradient(135deg, #0284c7 0%, #075985 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -133,4 +133,28 @@ body {
 .blog-prose strong {
   color: var(--text-primary);
   font-weight: 600;
+}
+
+/* ─── Empty State ─── */
+.empty-state {
+  background-color: var(--bg-card);
+  border-radius: 1.25rem;
+}
+
+/* ─── Filters glass panel ─── */
+.filters-panel {
+  background-color: var(--bg-card);
+  border-radius: 1.25rem;
+}
+
+/* ─── Scrollbars ─── */
+.hide-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+.hide-scrollbar {
+  -ms-overflow-style: none;
+  /* IE and Edge */
+  scrollbar-width: none;
+  /* Firefox */
 }

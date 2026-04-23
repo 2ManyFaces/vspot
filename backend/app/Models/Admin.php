@@ -2,12 +2,13 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
+use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Laravel\Sanctum\HasApiTokens;
 
-class Admin extends Model
+class Admin extends Authenticatable
 {
-    use HasFactory;
+    use HasFactory, HasApiTokens;
 
     protected $fillable = [
         'email',
@@ -24,9 +25,9 @@ class Admin extends Model
         'is_active' => 'boolean',
     ];
 
-    public function venues()
+    public function places()
     {
-        return $this->hasMany(Venue::class, 'created_by');
+        return $this->hasMany(Place::class, 'created_by');
     }
     public function events()
     {
@@ -35,5 +36,10 @@ class Admin extends Model
     public function blogPosts()
     {
         return $this->hasMany(BlogPost::class, 'author_id');
+    }
+
+    public function getAuthPassword()
+    {
+        return $this->password_hash;
     }
 }

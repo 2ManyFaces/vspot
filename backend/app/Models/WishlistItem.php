@@ -14,7 +14,7 @@ class WishlistItem extends Model
     protected $fillable = [
         'user_id',
         'wishlistable_type',
-        'venue_id',
+        'place_id',
         'event_id',
         'added_at',
     ];
@@ -27,9 +27,9 @@ class WishlistItem extends Model
     {
         return $this->belongsTo(User::class);
     }
-    public function venue()
+    public function place()
     {
-        return $this->belongsTo(Venue::class);
+        return $this->belongsTo(Place::class);
     }
     public function event()
     {

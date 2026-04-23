@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('featured_image_url', 500)->nullable();
             $table->text('body');
             $table->jsonb('tags')->nullable();
-            $table->jsonb('related_venue_ids')->nullable();
+            $table->jsonb('related_place_ids')->nullable();
             $table->boolean('is_published')->default(false);
             $table->timestamp('published_at')->nullable();
             $table->timestamps();

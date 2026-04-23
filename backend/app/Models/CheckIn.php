@@ -13,7 +13,8 @@ class CheckIn extends Model
 
     protected $fillable = [
         'user_id',
-        'venue_id',
+        'place_id',
+        'event_id',
         'checked_in_at',
     ];
 
@@ -25,8 +26,12 @@ class CheckIn extends Model
     {
         return $this->belongsTo(User::class);
     }
-    public function venue()
+    public function place()
     {
-        return $this->belongsTo(Venue::class);
+        return $this->belongsTo(Place::class);
+    }
+    public function event()
+    {
+        return $this->belongsTo(Event::class);
     }
 }

@@ -19,7 +19,7 @@ export default function FiltersSidebar() {
       if (category !== 'All') params.set('category', category);
       if (area !== 'All') params.set('area', area);
 
-      router.push(`/venues?${params.toString()}`, { scroll: false });
+      router.push(`/places?${params.toString()}`, { scroll: false });
     }, 500);
     return () => clearTimeout(timeout);
   }, [search, category, area, router]);
@@ -28,28 +28,29 @@ export default function FiltersSidebar() {
   const areas = ['All', 'Gulshan', 'Banani', 'Dhanmondi', 'Mirpur'];
 
   return (
-    <div className="glass p-6 rounded-2xl sticky top-24 border border-zinc-800">
-      <h3 className="text-xl font-bold mb-6 text-white">Filters</h3>
+    <div className="filters-panel p-6 sticky top-24">
+      <h3 className="text-xl font-bold mb-6" style={{ color: 'var(--text-primary)' }}>Filters</h3>
       
       <div className="space-y-6">
         <div>
-          <label className="block text-sm font-medium text-zinc-400 mb-2">Search</label>
+          <label className="block text-sm font-medium mb-2" style={{ color: 'var(--text-muted)' }}>Search</label>
           <div className="relative">
             <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-              <Search className="h-4 w-4 text-zinc-500" />
+              <Search className="h-4 w-4" style={{ color: 'var(--text-muted)' }} />
             </div>
             <input 
               type="text" 
               value={search}
               onChange={(e) => setSearch(e.target.value)}
-              className="block w-full pl-10 pr-3 py-2 bg-zinc-900 border border-zinc-700/50 rounded-lg text-white placeholder-zinc-500 focus:outline-none focus:ring-1 focus:ring-brand-500 transition shadow-inner"
-              placeholder="Search venues..."
+              className="block w-full pl-10 pr-3 py-2.5 rounded-xl text-sm outline-none transition-all focus:ring-2 focus:ring-brand-500/40"
+              style={{ backgroundColor: 'var(--bg-elevated)', color: 'var(--text-primary)' }}
+              placeholder="Search places..."
             />
           </div>
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-zinc-400 mb-3 flex items-center gap-2">
+          <label className="block text-sm font-medium mb-3 flex items-center gap-2" style={{ color: 'var(--text-muted)' }}>
             <Tag className="h-4 w-4" /> Category
           </label>
           <div className="space-y-3">
@@ -61,16 +62,22 @@ export default function FiltersSidebar() {
                   value={c}
                   checked={category === c}
                   onChange={(e) => setCategory(e.target.value)}
-                  className="w-4 h-4 text-brand-500 bg-zinc-900 border-zinc-700 focus:ring-brand-500 accent-brand-500"
+                  className="w-4 h-4 accent-brand-500"
+                  style={{ backgroundColor: 'var(--bg-elevated)' }}
                 />
-                <span className={`text-sm ${category === c ? 'text-white font-semibold flex items-center gap-2 before:w-1 before:h-1 before:bg-brand-500 before:rounded-full before:inline-block' : 'text-zinc-500 group-hover:text-zinc-300'} transition-all`}>{c}</span>
+                <span
+                  className="text-sm transition-all"
+                  style={{ color: category === c ? 'var(--text-primary)' : 'var(--text-muted)', fontWeight: category === c ? 600 : 400 }}
+                >
+                  {c}
+                </span>
               </label>
             ))}
           </div>
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-zinc-400 mb-3 flex items-center gap-2">
+          <label className="block text-sm font-medium mb-3 flex items-center gap-2" style={{ color: 'var(--text-muted)' }}>
             <MapPin className="h-4 w-4" /> Area Zone
           </label>
           <div className="space-y-3">
@@ -82,9 +89,15 @@ export default function FiltersSidebar() {
                   value={a}
                   checked={area === a}
                   onChange={(e) => setArea(e.target.value)}
-                  className="w-4 h-4 text-brand-500 bg-zinc-900 border-zinc-700 focus:ring-brand-500 accent-brand-500"
+                  className="w-4 h-4 accent-brand-500"
+                  style={{ backgroundColor: 'var(--bg-elevated)' }}
                 />
-                <span className={`text-sm ${area === a ? 'text-white font-semibold flex items-center gap-2 before:w-1 before:h-1 before:brand-bg-500 before:rounded-full before:inline-block' : 'text-zinc-500 group-hover:text-zinc-300'} transition-all`}>{a}</span>
+                <span
+                  className="text-sm transition-all"
+                  style={{ color: area === a ? 'var(--text-primary)' : 'var(--text-muted)', fontWeight: area === a ? 600 : 400 }}
+                >
+                  {a}
+                </span>
               </label>
             ))}
           </div>

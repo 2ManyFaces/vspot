@@ -13,7 +13,7 @@ class Review extends Model
     protected $fillable = [
         'user_id',
         'reviewable_type',
-        'venue_id',
+        'place_id',
         'event_id',
         'rating',
         'body',
@@ -23,9 +23,9 @@ class Review extends Model
     {
         return $this->belongsTo(User::class);
     }
-    public function venue()
+    public function place()
     {
-        return $this->belongsTo(Venue::class);
+        return $this->belongsTo(Place::class);
     }
     public function event()
     {

@@ -13,7 +13,7 @@ class Event extends Model
     protected $fillable = [
         'title',
         'slug',
-        'venue_id',
+        'place_id',
         'category',
         'area_name',
         'area_zone',
@@ -21,6 +21,7 @@ class Event extends Model
         'description',
         'cover_image_url',
         'event_date',
+        'end_date',
         'start_time',
         'end_time',
         'average_rating',
@@ -31,6 +32,7 @@ class Event extends Model
 
     protected $casts = [
         'event_date' => 'date',
+        'end_date' => 'date',
         'average_rating' => 'decimal:2',
         'is_published' => 'boolean',
     ];
@@ -39,9 +41,9 @@ class Event extends Model
     {
         return $this->belongsTo(Admin::class, 'created_by');
     }
-    public function venue()
+    public function place()
     {
-        return $this->belongsTo(Venue::class);
+        return $this->belongsTo(Place::class);
     }
     public function reviews()
     {

@@ -3,8 +3,11 @@
 namespace Database\Seeders;
 
 use App\Models\Admin;
-use App\Models\Venue;
+use App\Models\Place;
+use App\Models\Event;
 use App\Models\BlogPost;
+use App\Models\User;
+use App\Models\Review;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Str;
 
@@ -17,58 +20,408 @@ class DatabaseSeeder extends Seeder
             'display_name' => 'VibeSpot Editorial'
         ]);
 
-        Venue::factory(10)->create(['created_by' => $admin->id]);
-
-        Venue::factory()->create([
-            'name' => 'Neon Nights Rooftop',
-            'category' => 'Food & Drinks',
-            'area_name' => 'Banani',
-            'area_zone' => 'DNCC',
-            'address' => 'Road 11, Banani, Dhaka 1213',
-            'description' => 'Experience the neon glow of Dhaka from the highest rooftop cafe in Banani. Signature mocktails and synthwave vibes every weekend.',
-            'cover_image_url' => 'https://images.unsplash.com/photo-1566418876127-6f0a0bc4c6a2?auto=format&fit=crop&q=80&w=1200',
-            'budget_tier' => '$$$',
-            'average_rating' => 4.8,
-            'total_reviews' => 642,
-            'is_published' => true,
-            'created_by' => $admin->id
+        // Create a demo user for seeding reviews
+        $user = User::create([
+            'email' => 'demo@vibespot.com',
+            'display_name' => 'Arif Rahman',
+            'password_hash' => bcrypt('password'),
+            'is_active' => true,
         ]);
 
+        $user2 = User::create([
+            'email' => 'nadia@vibespot.com',
+            'display_name' => 'Nadia Hossain',
+            'password_hash' => bcrypt('password'),
+            'is_active' => true,
+        ]);
+
+        $user3 = User::create([
+            'email' => 'karim@vibespot.com',
+            'display_name' => 'Karim Uddin',
+            'password_hash' => bcrypt('password'),
+            'is_active' => true,
+        ]);
+
+        // ─── REAL DHAKA PLACES ───
+        $places = [
+            [
+                'name' => 'North End Coffee Roasters',
+                'category' => 'Food & Drinks',
+                'area_name' => 'Gulshan',
+                'area_zone' => 'DNCC',
+                'address' => 'Road 103, Gulshan 2, Dhaka 1212',
+                'description' => 'A premium third-wave coffee house in the heart of Gulshan. North End sources single-origin beans from Sylhet and Rangamati hill tracts, roasts in-house, and serves precision pour-overs alongside artisan pastries. The minimalist industrial interior — exposed brick, warm wood, Edison bulbs — draws remote workers, creatives, and coffee purists alike.',
+                'cover_image_url' => 'https://dynamic-media-cdn.tripadvisor.com/media/photo-o/0b/5a/58/01/north-end-billing-counter.jpg?w=900&h=500&s=1',
+                'budget_tier' => '$$$',
+                'average_rating' => 4.7,
+                'total_reviews' => 342,
+                'tags' => json_encode(['Coffee', 'WiFi', 'Laptop-Friendly', 'Specialty Brews']),
+                'is_published' => true,
+                'created_by' => $admin->id,
+            ],
+            [
+                'name' => 'Chillox',
+                'category' => 'Food & Drinks',
+                'area_name' => 'Dhanmondi',
+                'area_zone' => 'DSCC',
+                'address' => 'Road 27, Dhanmondi, Dhaka 1205',
+                'description' => 'An iconic Dhanmondi café nestled beside Dhanmondi Lake. Known for its signature mango smoothies, continental breakfast platters, and lakeside terrace seating. A go-to for university students from nearby campuses and young professionals looking for a relaxed weekend brunch.',
+                'cover_image_url' => 'https://lh3.googleusercontent.com/gps-cs-s/APNQkAFjCmcsGvFXxV8pKnH4brfIIRBYt2VPYM5rJWqz_bw6rOqGRJNT7lK-VDvpelHNOPi3mQkOfN9BUeLHKt7fceX3FviCp6AyEBKyjJeIN4gplhHb4IWmYbGelRs5kVORTryjpVtGpxevMk8=s680-w680-h510-rw',
+                'budget_tier' => '$$',
+                'average_rating' => 4.5,
+                'total_reviews' => 528,
+                'tags' => json_encode(['Lakeside', 'Brunch', 'Student-Friendly', 'Outdoor Seating']),
+                'is_published' => true,
+                'created_by' => $admin->id,
+            ],
+            [
+                'name' => 'Star Kabab & Restaurant',
+                'category' => 'Food & Drinks',
+                'area_name' => 'Old Dhaka',
+                'area_zone' => 'DSCC',
+                'address' => 'Nazira Bazaar, Bangsal Road, Dhaka 1100',
+                'description' => 'A legendary Old Dhaka institution serving the finest Mughlai cuisine for over five decades. Their mutton rezala, beef tehari, and the famous naan-e-kabab are not just meals — they are cultural experiences. The no-frills communal dining atmosphere is part of the charm.',
+                'cover_image_url' => 'https://dynamic-media-cdn.tripadvisor.com/media/photo-o/07/e7/28/f7/star-kabab-restaurant.jpg?w=1200&h=-1&s=1',
+                'budget_tier' => '$',
+                'average_rating' => 4.8,
+                'total_reviews' => 1205,
+                'tags' => json_encode(['Mughlai', 'Heritage', 'Biriyani', 'Legendary']),
+                'is_published' => true,
+                'created_by' => $admin->id,
+            ],
+            [
+                'name' => 'Lalbagh Fort',
+                'category' => 'Heritage',
+                'area_name' => 'Old Dhaka',
+                'area_zone' => 'DSCC',
+                'address' => 'Lalbagh Road, Dhaka 1211',
+                'description' => 'A 17th-century Mughal fort complex begun by Prince Muhammad Azam in 1678. Though never completed, the fort contains the Mosque of Shaista Khan, the Tomb of Bibi Pari, and a museum. The well-maintained gardens offer a serene green haven amidst Old Dhaka\'s busy lanes. A must-visit for history enthusiasts and photographers.',
+                'cover_image_url' => 'https://dynamic-media-cdn.tripadvisor.com/media/photo-o/31/fb/13/65/lalbagh-is-a-popular.jpg?w=1200&h=1200&s=1',
+                'budget_tier' => '$',
+                'average_rating' => 4.6,
+                'total_reviews' => 890,
+                'tags' => json_encode(['Mughal', 'History', 'Photography', 'Museum']),
+                'is_published' => true,
+                'created_by' => $admin->id,
+            ],
+            [
+                'name' => 'Ahsan Manzil (Pink Palace)',
+                'category' => 'Heritage',
+                'area_name' => 'Old Dhaka',
+                'area_zone' => 'DSCC',
+                'address' => 'Kumartoli, Dhaka 1100',
+                'description' => 'The iconic Pink Palace on the banks of the Buriganga River — once the seat of the Nawabs of Dhaka. Now a museum, Ahsan Manzil showcases the grandeur of Bengal\'s aristocratic past through 23 galleries filled with portraits, furniture, and artefacts. The palace glows magnificently under evening floodlights.',
+                'cover_image_url' => 'https://dynamic-media-cdn.tripadvisor.com/media/photo-o/14/16/b2/fe/ahsan-monjil.jpg?w=1200&h=800&s=1',
+                'budget_tier' => '$',
+                'average_rating' => 4.7,
+                'total_reviews' => 760,
+                'tags' => json_encode(['Palace', 'Nawab', 'Buriganga', 'Museum']),
+                'is_published' => true,
+                'created_by' => $admin->id,
+            ],
+            [
+                'name' => 'Hatirjheel Lakefront',
+                'category' => 'Outdoors',
+                'area_name' => 'Tejgaon',
+                'area_zone' => 'DNCC',
+                'address' => 'Hatirjheel Bridge, Tejgaon, Dhaka',
+                'description' => 'Dhaka\'s most ambitious urban water body project spanning 302 acres. The beautifully lit pedestrian walkways, cycling paths, and the iconic bridge make Hatirjheel the city\'s favourite evening hangout. Street food vendors, boat rides during monsoon, and spectacular sunset views draw thousands daily.',
+                'cover_image_url' => 'https://dynamic-media-cdn.tripadvisor.com/media/photo-o/18/59/9b/8b/hatirheel-lake.jpg?w=1200&h=800&s=1',
+                'budget_tier' => '$',
+                'average_rating' => 4.4,
+                'total_reviews' => 1580,
+                'tags' => json_encode(['Lake', 'Walking', 'Cycling', 'Night Views', 'Free Entry']),
+                'is_published' => true,
+                'created_by' => $admin->id,
+            ],
+            [
+                'name' => 'Dhanmondi Lake Park',
+                'category' => 'Outdoors',
+                'area_name' => 'Dhanmondi',
+                'area_zone' => 'DSCC',
+                'address' => 'Road 15, Dhanmondi, Dhaka 1205',
+                'description' => 'The green lung of Dhanmondi — a serene park surrounding the iconic lake. Popular for morning joggers, evening strollers, and couples. The recently renovated walkways, kids\' play zones, and lakeside benches make it Dhaka\'s most cherished urban park. The Rabindra Sarobar area hosts cultural events year-round.',
+                'cover_image_url' => 'https://images.unsplash.com/photo-1632961745430-2fc391b74f4b?auto=format&fit=crop&w=1200&q=80',
+                'budget_tier' => '$',
+                'average_rating' => 4.3,
+                'total_reviews' => 2100,
+                'tags' => json_encode(['Lake', 'Park', 'Jogging', 'Family-Friendly', 'Free Entry']),
+                'is_published' => true,
+                'created_by' => $admin->id,
+            ],
+            [
+                'name' => 'Dhaka Art Center',
+                'category' => 'Culture',
+                'area_name' => 'Dhanmondi',
+                'area_zone' => 'DSCC',
+                'address' => 'Road 6, Dhanmondi, Dhaka 1205',
+                'description' => 'Dhaka\'s premier contemporary art space. The center hosts rotating exhibitions by emerging Bangladeshi artists, monthly open-mic nights, documentary film screenings, and art workshops. The gallery café on the second floor serves excellent espresso. A cultural anchor for the Dhanmondi creative community.',
+                'cover_image_url' => 'https://images.unsplash.com/photo-1531243269054-5ebf6f34081e?auto=format&fit=crop&w=1200&q=80',
+                'budget_tier' => '$$',
+                'average_rating' => 4.5,
+                'total_reviews' => 310,
+                'tags' => json_encode(['Art', 'Gallery', 'Exhibitions', 'Workshops']),
+                'is_published' => true,
+                'created_by' => $admin->id,
+            ],
+            [
+                'name' => 'Gulshan DCC Market Food Court',
+                'category' => 'Food & Drinks',
+                'area_name' => 'Gulshan',
+                'area_zone' => 'DNCC',
+                'address' => 'Gulshan 1 Circle, Dhaka 1212',
+                'description' => 'The bustling food court at Gulshan DCC Market is a melting pot of Dhaka\'s street food culture. From momos and fuchkas to grilled chicken and fresh juice bars — over 30 stalls offer affordable eats in a vibrant, chaotic atmosphere. Best visited during the evening rush.',
+                'cover_image_url' => 'https://images.unsplash.com/photo-1729941506359-cf4924f023e5?auto=format&fit=crop&w=1200&q=80',
+                'budget_tier' => '$',
+                'average_rating' => 4.2,
+                'total_reviews' => 920,
+                'tags' => json_encode(['Street Food', 'Budget', 'Fuchka', 'Night Market']),
+                'is_published' => true,
+                'created_by' => $admin->id,
+            ],
+            [
+                'name' => 'Jamuna Future Park',
+                'category' => 'Shopping',
+                'area_name' => 'Kuril',
+                'area_zone' => 'DNCC',
+                'address' => 'Kuril Bishwa Road, Dhaka 1229',
+                'description' => 'South Asia\'s largest shopping and entertainment complex. Jamuna Future Park houses over 500 retail outlets, a 9-screen multiplex cinema, bowling alley, ice rink, kids\' amusement zone, and a massive food court. On weekends, it transforms into Dhaka\'s biggest family destination.',
+                'cover_image_url' => 'https://dynamic-media-cdn.tripadvisor.com/media/photo-o/1a/89/56/3f/jamuna-future-park.jpg?w=1200&h=800&s=1',
+                'budget_tier' => '$$',
+                'average_rating' => 4.3,
+                'total_reviews' => 3200,
+                'tags' => json_encode(['Shopping', 'Cinema', 'Family', 'Ice Rink', 'Food Court']),
+                'is_published' => true,
+                'created_by' => $admin->id,
+            ],
+            [
+                'name' => 'National Parliament House',
+                'category' => 'Heritage',
+                'area_name' => 'Sher-e-Bangla Nagar',
+                'area_zone' => 'DSCC',
+                'address' => 'Sher-e-Bangla Nagar, Dhaka 1207',
+                'description' => 'Designed by legendary architect Louis Kahn, the Jatiya Sangsad Bhaban is widely considered one of the 20th century\'s most significant works of architecture. The brutalist concrete complex, set within a vast artificial lake and landscaped grounds, is both a functioning parliament and an architectural pilgrimage site. The surrounding grounds are open for public walks.',
+                'cover_image_url' => 'https://dynamic-media-cdn.tripadvisor.com/media/photo-o/09/49/57/25/national-parliament-house.jpg?w=1200&h=-1&s=1',
+                'budget_tier' => '$',
+                'average_rating' => 4.9,
+                'total_reviews' => 1850,
+                'tags' => json_encode(['Architecture', 'Louis Kahn', 'Brutalist', 'Photography']),
+                'is_published' => true,
+                'created_by' => $admin->id,
+            ],
+            [
+                'name' => 'Star Cineplex',
+                'category' => 'Cinema',
+                'area_name' => 'Panthapath',
+                'area_zone' => 'DNCC',
+                'address' => 'Level 8, Bashundhara City, Panthapath, Dhaka',
+                'description' => 'The first multiplex cinema in Bangladesh. Offering international standard movie viewing experience with multiple screens, premium seating, and state-of-the-art sound systems.',
+                'cover_image_url' => 'https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?auto=format&fit=crop&w=1200&q=80',
+                'budget_tier' => '$$$',
+                'tags' => json_encode(['Movies', 'Multiplex', 'Dolly Atmos', 'Bashundhara City']),
+                'is_published' => true,
+                'created_by' => $admin->id,
+            ],
+            [
+                'name' => 'Blockbuster Cinemas',
+                'category' => 'Cinema',
+                'area_name' => 'Kuril',
+                'area_zone' => 'DNCC',
+                'address' => 'Jamuna Future Park, Kuril, Dhaka',
+                'description' => 'A massive multiplex located within Jamuna Future Park, featuring 7 themed theaters including a premium VIP lounge and 3D screens.',
+                'cover_image_url' => 'https://images.unsplash.com/photo-1517604401127-d3726569ec3e?auto=format&fit=crop&w=1200&q=80',
+                'budget_tier' => '$$$',
+                'tags' => json_encode(['Movies', 'Multiplex', '3D', 'JFP']),
+                'is_published' => true,
+                'created_by' => $admin->id,
+            ],
+            [
+                'name' => 'Bashundhara City Shopping Mall',
+                'category' => 'Shopping',
+                'area_name' => 'Panthapath',
+                'area_zone' => 'DNCC',
+                'address' => 'Panthapath, Dhaka 1215',
+                'description' => 'One of the largest shopping malls in South Asia, featuring international brands, local boutiques, a massive food court, and an entire level dedicated to gadgets.',
+                'cover_image_url' => 'https://images.unsplash.com/photo-1567401893424-7bc21c8c9c72?auto=format&fit=crop&w=1200&q=80',
+                'budget_tier' => '$$$',
+                'tags' => json_encode(['Shopping', 'Mall', 'Fashion', 'Gadgets']),
+                'is_published' => true,
+                'created_by' => $admin->id,
+            ],
+            [
+                'name' => 'New Market',
+                'category' => 'Shopping',
+                'area_name' => 'Azimpur',
+                'area_zone' => 'DSCC',
+                'address' => 'Mirpur Road, Dhaka 1205',
+                'description' => 'A historic shopping district famous for its circular layout, offering everything from books and stationery to traditional clothing and kitchenware at bargain prices.',
+                'cover_image_url' => 'https://images.unsplash.com/photo-1533900298318-6b8da08a523e?auto=format&fit=crop&w=1200&q=80',
+                'budget_tier' => '$',
+                'tags' => json_encode(['Traditional', 'Bargain', 'Heritage', 'Books']),
+                'is_published' => true,
+                'created_by' => $admin->id,
+            ],
+        ];
+
+        foreach ($places as $v) {
+            Place::create($v);
+        }
+
+        // ─── REAL DHAKA EVENTS ───
+        $events = [
+            [
+                'title' => 'Ekushey Boi Mela 2026',
+                'slug' => 'ekushey-boi-mela-2026',
+                'category' => 'Culture',
+                'area_name' => 'Bangla Academy',
+                'area_zone' => 'DSCC',
+                'organiser_name' => 'Bangla Academy',
+                'description' => 'The nation\'s biggest book fair, held every February to commemorate the Language Movement martyrs. Over 500 publishers set up stalls across the Bangla Academy grounds and Suhrawardy Udyan.',
+                'cover_image_url' => 'https://images.unsplash.com/photo-1491841573634-28140fc7ced7?auto=format&fit=crop&w=1200&q=80',
+                'event_date' => '2026-05-01',
+                'end_date' => '2026-05-31',
+                'start_time' => '03:00 PM',
+                'end_time' => '09:00 PM',
+                'average_rating' => 4.8,
+                'total_reviews' => 2400,
+                'is_published' => true,
+                'created_by' => $admin->id,
+            ],
+            [
+                'title' => 'Dhaka Lit Fest 2026',
+                'slug' => 'dhaka-lit-fest-2026',
+                'category' => 'Culture',
+                'area_name' => 'Bangla Academy',
+                'area_zone' => 'DSCC',
+                'organiser_name' => 'Dhaka Lit Fest Foundation',
+                'description' => 'South Asia\'s most prestigious English-language literary festival. Featuring over 200 speakers across 100+ sessions — panel discussions, readings, book launches, and performances.',
+                'cover_image_url' => 'https://images.unsplash.com/photo-1524995997946-a1c2e315a42f?auto=format&fit=crop&w=1200&q=80',
+                'event_date' => '2026-11-14',
+                'end_date' => '2026-11-16',
+                'start_time' => '10:00 AM',
+                'end_time' => '08:00 PM',
+                'average_rating' => 4.9,
+                'total_reviews' => 1800,
+                'is_published' => true,
+                'created_by' => $admin->id,
+            ],
+            [
+                'title' => 'Pohela Boishakh 1433',
+                'slug' => 'pohela-boishakh-1433',
+                'category' => 'Culture',
+                'area_name' => 'Ramna Boothomul',
+                'area_zone' => 'DSCC',
+                'organiser_name' => 'Chhayanaut',
+                'description' => 'The Bengali New Year celebrations at Ramna Botomul — Dhaka\'s most cherished cultural tradition.',
+                'cover_image_url' => 'https://images.unsplash.com/photo-1767330855011-fc628d33caea?auto=format&fit=crop&w=1200&q=80',
+                'event_date' => '2026-04-14',
+                'end_date' => '2026-04-14',
+                'start_time' => '06:00 AM',
+                'end_time' => '10:00 PM',
+                'average_rating' => 4.9,
+                'total_reviews' => 5100,
+                'is_published' => true,
+                'created_by' => $admin->id,
+            ],
+            [
+                'title' => 'Spring Street Food Festival',
+                'slug' => 'spring-food-fest-2026',
+                'category' => 'Food & Drinks',
+                'area_name' => 'Banani',
+                'area_zone' => 'DNCC',
+                'organiser_name' => 'Chef\'s Table',
+                'description' => 'A 10-day celebration of Dhaka\'s vibrant street food culture with over 50 vendors from across the city.',
+                'cover_image_url' => 'https://images.unsplash.com/photo-1729941506359-cf4924f023e5?auto=format&fit=crop&w=1200&q=80',
+                'event_date' => '2026-04-20',
+                'end_date' => '2026-04-30',
+                'start_time' => '12:00 PM',
+                'end_time' => '11:00 PM',
+                'average_rating' => 4.5,
+                'total_reviews' => 120,
+                'is_published' => true,
+                'created_by' => $admin->id,
+            ],
+            [
+                'title' => 'Contemporary Art Exhibit',
+                'slug' => 'contemporary-art-2026',
+                'category' => 'Culture',
+                'area_name' => 'Dhanmondi',
+                'area_zone' => 'DSCC',
+                'organiser_name' => 'Dhaka Art Center',
+                'description' => 'Showcasing the latest works by emerging artists from across Bangladesh.',
+                'cover_image_url' => 'https://images.unsplash.com/photo-1531243269054-5ebf6f34081e?auto=format&fit=crop&w=1200&q=80',
+                'event_date' => '2026-04-22',
+                'end_date' => '2026-05-05',
+                'start_time' => '10:00 AM',
+                'end_time' => '08:00 PM',
+                'average_rating' => 4.7,
+                'total_reviews' => 45,
+                'is_published' => true,
+                'created_by' => $admin->id,
+            ],
+            [
+                'title' => 'Rock Dhaka 2026',
+                'slug' => 'rock-dhaka-2026',
+                'category' => 'Entertainment',
+                'area_name' => 'International Convention City Bashundhara',
+                'area_zone' => 'DNCC',
+                'organiser_name' => 'LiveSquare Entertainment',
+                'description' => 'The biggest rock concert of the year featuring top bands of Bangladesh.',
+                'cover_image_url' => 'https://images.unsplash.com/photo-1459749411175-04bf5292ceea?auto=format&fit=crop&w=1200&q=80',
+                'event_date' => '2026-05-15',
+                'end_date' => '2026-05-15',
+                'start_time' => '04:00 PM',
+                'end_time' => '11:00 PM',
+                'average_rating' => 0,
+                'total_reviews' => 0,
+                'is_published' => true,
+                'created_by' => $admin->id,
+            ],
+        ];
+
+        foreach ($events as $e) {
+            Event::create($e);
+        }
+
+        // ─── SEED SOME REVIEWS ───
+        $reviewData = [
+            ['place_id' => 1, 'user_id' => $user->id, 'rating' => 5, 'body' => 'Best specialty coffee in Dhaka, hands down. The Ethiopian single-origin pour-over was phenomenal.'],
+            ['place_id' => 1, 'user_id' => $user2->id, 'rating' => 4, 'body' => 'Great ambiance for working. WiFi is reliable and the cold brew is solid. Can get crowded on weekends.'],
+            ['place_id' => 2, 'user_id' => $user->id, 'rating' => 5, 'body' => 'The lakeside terrace at sunset is magical. Mango smoothie is a must-try. Perfect brunch spot.'],
+            ['place_id' => 2, 'user_id' => $user3->id, 'rating' => 4, 'body' => 'Love the vibe here. Affordable for students. The pasta could use improvement though.'],
+            ['place_id' => 3, 'user_id' => $user2->id, 'rating' => 5, 'body' => 'The mutton biriyani here is genuinely the best I have ever had. A Dhaka institution. Come early or it sells out.'],
+            ['place_id' => 3, 'user_id' => $user3->id, 'rating' => 5, 'body' => 'Five generations of perfection. The naan-e-kabab is otherworldly. Old Dhaka at its finest.'],
+            ['place_id' => 4, 'user_id' => $user->id, 'rating' => 5, 'body' => 'Walking through the Mughal corridors at dawn was breathtaking. The gardens are so well maintained.'],
+            ['place_id' => 4, 'user_id' => $user2->id, 'rating' => 4, 'body' => 'Beautifully preserved. The Tomb of Bibi Pari is hauntingly beautiful. Wish the museum had more English signage.'],
+            ['place_id' => 5, 'user_id' => $user3->id, 'rating' => 5, 'body' => 'The Pink Palace at dusk, lit up against the Buriganga — absolutely stunning. Great little museum too.'],
+            ['place_id' => 6, 'user_id' => $user->id, 'rating' => 4, 'body' => 'Best place in Dhaka for an evening walk. The bridge is beautifully lit. Street food vendors are a bonus.'],
+            ['place_id' => 7, 'user_id' => $user2->id, 'rating' => 4, 'body' => 'Peaceful morning jog around the lake. The renovated walkways are great. Gets very crowded evenings.'],
+            ['place_id' => 11, 'user_id' => $user->id, 'rating' => 5, 'body' => 'Louis Kahn\'s masterpiece. You feel the weight of history and architecture simultaneously. The grounds are perfect for photography.'],
+            ['place_id' => 12, 'user_id' => $user3->id, 'rating' => 5, 'body' => 'Incredible live music under the stars. The acoustic sessions on Friday nights are not to be missed.'],
+        ];
+
+        foreach ($reviewData as $r) {
+            Review::create([
+                ...$r,
+                'reviewable_type' => 'place',
+            ]);
+        }
+
+        // ─── BLOG POSTS ───
         $posts = [
             [
                 'title' => 'Best Rooftop Cafés in Dhanmondi',
                 'slug' => 'best-rooftop-cafes-in-dhanmondi',
-                'featured_image_url' => 'https://images.unsplash.com/photo-1566418876127-6f0a0bc4c6a2?auto=format&fit=crop&w=1200&q=80',
-                'body' => "Dhanmondi has quietly become Dhaka's rooftop café capital. Perched above the city's leafy avenues, these sky-high spots offer stunning views alongside world-class coffee and locally sourced bites.\n\n## Why Rooftops?\n\nDhaka's urban heat makes a breezy rooftop the ultimate escape. When the sun dips below the horizon, these terraces transform into social hubs buzzing with conversations, live acoustic sets, and the warm glow of string lights.\n\n## Our Top 5 Picks\n\n**1. The Perch** — Nestled above Satmasjid Road, The Perch serves specialty pour-overs and mezze platters as you look out over Lake Dhanmondi. A must-visit on weekend evenings.\n\n**2. Sky Garden Café** — A verdant rooftop paradise with hanging ferns and ambient lighting. Their cold brew and banana bread are legendary in the neighbourhood.\n\n**3. Altitude Lounge** — More upscale, Altitude caters to professionals unwinding after work. Think craft cocktails and sushi platters against the glittering city skyline.\n\n**4. Chai Stories** — For the tea enthusiast, Chai Stories curates 40+ single-origin blends alongside homemade snacks. Their evening storytelling sessions are a community favourite.\n\n**5. Roofscape** — The newest addition to the Dhanmondi scene, Roofscape prioritises local art. Gallery walls line the terrace perimeter, with rotating exhibitions every month.\n\n## Tips for Visiting\n\nVisit on weeknights to avoid queues. Many rooftop spots require reservations on Fridays and Saturdays. Most are cash-only, though newer venues now accept mobile payments.",
+                'featured_image_url' => 'https://cosmosgroup.sgp1.digitaloceanspaces.com/news/details/8866773_Adda%20Multi-Cuisine%20Restaurant%20Dhanmondi%20Dhaka.jpg',
+                'body' => "Dhanmondi has quietly become Dhaka's rooftop café capital. Perched above the city's leafy aplaces, these sky-high spots offer stunning views alongside world-class coffee and locally sourced bites.\n\n## Why Rooftops?\n\nDhaka's urban heat makes a breezy rooftop the ultimate escape. When the sun dips below the horizon, these terraces transform into social hubs buzzing with conversations, live acoustic sets, and the warm glow of string lights.\n\n## Our Top 5 Picks\n\n**1. The Perch** — Nestled above Satmasjid Road, The Perch serves specialty pour-overs and mezze platters as you look out over Lake Dhanmondi. A must-visit on weekend evenings.\n\n**2. Sky Garden Café** — A verdant rooftop paradise with hanging ferns and ambient lighting. Their cold brew and banana bread are legendary in the neighbourhood.\n\n**3. Altitude Lounge** — More upscale, Altitude caters to professionals unwinding after work. Think craft cocktails and sushi platters against the glittering city skyline.\n\n**4. Chai Stories** — For the tea enthusiast, Chai Stories curates 40+ single-origin blends alongside homemade snacks. Their evening storytelling sessions are a community favourite.\n\n**5. Roofscape** — The newest addition to the Dhanmondi scene, Roofscape prioritises local art. Gallery walls line the terrace perimeter, with rotating exhibitions every month.",
                 'tags' => ['Rooftop', 'Café', 'Dhanmondi', 'Food & Drinks'],
             ],
             [
                 'title' => 'A Night Out in Old Dhaka',
                 'slug' => 'a-night-out-in-old-dhaka',
-                'featured_image_url' => 'https://images.unsplash.com/photo-1555396273-367ea4eb4db5?auto=format&fit=crop&w=1200&q=80',
-                'body' => "Old Dhaka doesn't sleep. As the rest of the city winds down, Puran Dhaka comes alive — its narrow alleys filling with the clatter of rickshaws, the sizzle of biriani pots, and the laughter of friends gathering around centuries-old tea stalls.\n\n## Starting Your Evening\n\nBegin at **Chawkbazar** as dusk sets in. This ancient marketplace has been the heart of Old Dhaka trade for over 400 years. In the evening, its stalls pivot to food — vendors setting up rows of iftari-style treats regardless of the season.\n\n## The Food Trail\n\nNo night in Puran Dhaka is complete without a pilgrimage to **Haji Biriani** on Nalgola Road. Their 100-year-old recipe of slow-cooked mutton biriani is the stuff of legend. Arrive before 8 PM — it sells out.\n\nNext, make your way to **Star Hotel** in Bangshal for their famous beef tehari — a flat-rice dish fragrant with whole spices. The communal seating and no-frills environment are part of the charm.\n\n## Walking Ahsan Manzil at Dusk\n\nThe Pink Palace — Ahsan Manzil — glows under floodlights against the Buriganga River. An evening stroll along the ghats here offers an entirely different perspective of Dhaka: quieter, contemplative, beautiful.\n\n## Wrapping Up\n\nEnd your night with a cup of Badam Milk or Borhani from one of the roadside vendors near Sadarghat. It's a sensory close to an unforgettable evening in the oldest part of our city.",
+                'featured_image_url' => 'https://sarakhon.com/wp-content/uploads/2025/03/Image-2025-03-15at-05.50.16_59a4e.jpg',
+                'body' => "Old Dhaka doesn't sleep. As the rest of the city winds down, Puran Dhaka comes alive — its narrow alleys filling with the clatter of rickshaws, the sizzle of biriani pots, and the laughter of friends gathering around centuries-old tea stalls.\n\n## Starting Your Evening\n\nBegin at **Chawkbazar** as dusk sets in. This ancient marketplace has been the heart of Old Dhaka trade for over 400 years.\n\n## The Food Trail\n\nNo night in Puran Dhaka is complete without a pilgrimage to **Haji Biriani** on Nalgola Road. Their 100-year-old recipe of slow-cooked mutton biriani is the stuff of legend.\n\n## Walking Ahsan Manzil at Dusk\n\nThe Pink Palace glows under floodlights against the Buriganga River. An evening stroll along the ghats here offers an entirely different perspective of Dhaka: quieter, contemplative, beautiful.",
                 'tags' => ['Heritage', 'Food', 'Old Dhaka', 'Night Out'],
-            ],
-            [
-                'title' => 'Heritage Sites Near Lalbagh',
-                'slug' => 'heritage-sites-near-lalbagh',
-                'featured_image_url' => 'https://images.unsplash.com/photo-1548013146-72479768bada?auto=format&fit=crop&w=1200&q=80',
-                'body' => "The Lalbagh Fort area is one of Dhaka's most historically dense neighbourhoods. Within a kilometre radius, you'll find Mughal-era monuments, colonial-era mansions, and centuries-old mosques that tell the intertwined story of Bengal's past.\n\n## Lalbagh Fort (Qila-e-Aurangabad)\n\nConstruction of this sprawling fort complex began in 1678 under Prince Muhammad Azam, son of Aurangzeb. Though never completed, the fort contains three main structures: the Mosque of Shaista Khan, the Tomb of Bibi Pari, and the Audience Hall, now a museum.\n\nVisit in the early morning when light falls softly through the arched corridors. The fort gardens are impeccably maintained and offer a surprising green haven within the urban sprawl.\n\n## The Star Mosque (Tara Masjid)\n\nA short walk from Lalbagh, the Star Mosque is one of Dhaka's most visually striking buildings. Its exterior is covered in inlaid coloured tiles — a mosaic of blue, turquoise, and white — that shimmer brilliantly in sunlight. Built in the early 18th century, it was renovated and expanded in the early 20th century.\n\n## Husaini Dalan\n\nThis 17th-century imambara is the centre of Shia Muslim religious ceremony in Dhaka. Its distinctive architecture — double-storey colonnaded façade — makes it one of the most photogenic structures in Old Dhaka.\n\n## Armenian Church of the Holy Resurrection\n\nBuilt in 1781, this Georgian-style church stands as a testament to Dhaka's once-thriving Armenian merchant community. The cemetery behind it contains tombstones dating to the 18th century — an evocative reminder of the city's multicultural past.\n\n## Practical Tips\n\nWear comfortable shoes as the footpaths are uneven. The area is best navigated on foot or by rickshaw. Combine your visit with lunch at one of the traditional restaurants in Bangshal.",
-                'tags' => ['Heritage', 'History', 'Lalbagh', 'Architecture'],
-            ],
-            [
-                'title' => 'Gulshan\'s Hidden Café Scene',
-                'slug' => 'gulshan-hidden-cafe-scene',
-                'featured_image_url' => 'https://images.unsplash.com/photo-1554118811-1e0d58224f24?auto=format&fit=crop&w=1200&q=80',
-                'body' => "Beyond the embassy row and shopping malls, Gulshan hides an extraordinary collection of intimate cafés that have quietly built devoted followings among creative professionals, diplomats, and neighbourhood regulars.\n\n## The Third-Wave Coffee Movement\n\nGulshan is leading Dhaka's third-wave coffee revolution. Cafés here are investing in single-origin beans, precision brewing equipment, and baristas trained abroad. The result: a cup of coffee that can genuinely stand alongside what you'd find in London or Singapore.\n\n## Must-Visit Spots\n\n**Blend Station** — A minimalist space on Gulshan 2, Blend Station's rotating seasonal menu features beans sourced directly from Sylhet and Chittagong hill farms. Their signature 'Bangladesh Blend' cold brew is exceptional.\n\n**The Reading Room** — Part bookshop, part café, The Reading Room is the closest Dhaka comes to a Parisian literary salon. Shelves of curated books line the walls; the café serves some of the best homemade pastries in the city.\n\n**Kafé Kathmandu** — An unexpected Nepal-inspired spot run by a Nepalese chef and her Bangladeshi husband. The fusion menu — momos alongside fuchka, masala chai alongside espresso — is gloriously eclectic.\n\n## For the Evenings\n\nAs afternoon fades, Gulshan's café scene transitions into evening mode. Many spots introduce live acoustic music, poetry readings, or open-mic nights on Thursdays and Fridays, making them natural pre-dinner gathering spots.",
-                'tags' => ['Coffee', 'Café', 'Gulshan', 'Creative'],
-            ],
-            [
-                'title' => 'Live Music Venues You Should Know',
-                'slug' => 'live-music-venues-you-should-know',
-                'featured_image_url' => 'https://images.unsplash.com/photo-1524368535928-5b5e00ddc76b?auto=format&fit=crop&w=1200&q=80',
-                'body' => "Dhaka's live music scene has exploded over the past five years. From intimate jazz lounges to rooftop concert venues, the city now offers a surprisingly diverse range of live performance spaces for every musical taste.\n\n## The Jazz Underground\n\nTucked into a basement on Banani Road 11, The Jazz Underground hosts live jazz and soul performances four nights a week. The venue's brick walls and low lighting create an atmosphere that feels transplanted from New Orleans. The performers rotate between in-house residents and international touring acts.\n\n## Dhaka Blues House\n\nA larger venue in Uttara, the Blues House books a mix of traditional blues, rock, and fusion acts. Their weekend double-headers — an early dinner show followed by a late-night set — draw audiences from across the city.\n\n## Acoustic Fridays at Café Noise\n\nCafé Noise in Dhanmondi runs a legendary weekly acoustic session called Acoustic Fridays. Local singer-songwriters perform original compositions in an intimate setting. It's a genuine community institution — no cover charge, donation-based.\n\n## The Banani Rooftop Sessions\n\nA newer format that's caught on rapidly: rooftop concert sessions hosted by various venues across Banani. Bands set up on rooftops, and the open-air acoustic experience beneath the Dhaka night sky is something genuinely special.\n\n## Upcoming Highlights\n\nKeep an eye on VibeSpot's Events section for live music listings updated weekly. The platform lists both recurring weekly shows and one-off special performances across all genres.",
-                'tags' => ['Music', 'Entertainment', 'Live Events', 'Nightlife'],
             ],
         ];
 
@@ -80,5 +433,21 @@ class DatabaseSeeder extends Seeder
                 'published_at' => now()->subDays(rand(1, 20)),
             ]);
         }
+
+        // ─── FINAL SYNC ───
+        // Recalculate ratings and counts for all places and events to ensure accuracy
+        \App\Models\Place::all()->each(function($place) {
+            $reviews = \App\Models\Review::where('place_id', $place->id);
+            $place->average_rating = $reviews->avg('rating') ?: 0;
+            $place->total_reviews = $reviews->count();
+            $place->save();
+        });
+        
+        \App\Models\Event::all()->each(function($event) {
+            $reviews = \App\Models\Review::where('event_id', $event->id);
+            $event->average_rating = $reviews->avg('rating') ?: 0;
+            $event->total_reviews = $reviews->count();
+            $event->save();
+        });
     }
 }

@@ -3,12 +3,12 @@
 namespace Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
-use App\Models\Venue;
+use App\Models\Place;
 use App\Models\Admin;
 
-class VenueFactory extends Factory
+class PlaceFactory extends Factory
 {
-    protected $model = Venue::class;
+    protected $model = Place::class;
 
     public function definition(): array
     {

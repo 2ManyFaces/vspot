@@ -12,7 +12,7 @@ return new class extends Migration
             $table->id();
             $table->string('title', 255);
             $table->string('slug', 255)->unique();
-            $table->foreignId('venue_id')->nullable()->constrained('venues')->onDelete('cascade');
+            $table->foreignId('place_id')->nullable()->constrained('places')->onDelete('cascade');
             $table->string('category', 50)->nullable();
             $table->string('area_name', 100)->nullable();
             $table->string('area_zone', 10)->nullable();

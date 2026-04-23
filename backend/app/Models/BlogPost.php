@@ -16,14 +16,14 @@ class BlogPost extends Model
         'featured_image_url',
         'body',
         'tags',
-        'related_venue_ids',
+        'related_place_ids',
         'is_published',
         'published_at',
     ];
 
     protected $casts = [
         'tags' => 'array',
-        'related_venue_ids' => 'array',
+        'related_place_ids' => 'array',
         'is_published' => 'boolean',
         'published_at' => 'datetime',
     ];

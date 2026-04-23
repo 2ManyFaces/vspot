@@ -27,14 +27,14 @@ const socialIcons = {
 
 const footerLinks = {
   Discover: [
-    { label: 'Venues', href: '/venues' },
+    { label: 'Places', href: '/places' },
     { label: 'Events', href: '/events' },
     { label: 'Blog & Guides', href: '/blog' },
-    { label: 'Neighbourhoods', href: '/venues?area=Gulshan' },
+    { label: 'Neighbourhoods', href: '/places?area=Gulshan' },
   ],
   Company: [
     { label: 'About VibeSpot', href: '/about' },
-    { label: 'List Your Venue', href: '/for-owners' },
+    { label: 'List Your Place', href: '/for-owners' },
     { label: 'Advertise', href: '/advertise' },
     { label: 'Contact Us', href: '/contact' },
   ],
@@ -54,22 +54,22 @@ const socials = [
 
 export default function Footer() {
   return (
-    <footer className="border-t mt-auto" style={{ borderColor: 'var(--card-border)', backgroundColor: 'var(--card-bg)' }}>
+    <footer className="mt-auto" style={{ backgroundColor: 'var(--bg-card)' }}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-12">
 
           {/* Brand column */}
           <div className="lg:col-span-2 space-y-5">
-            <div className="flex items-center gap-2">
-              <div className="w-8 h-8 bg-brand-600 rounded-lg flex items-center justify-center shadow-[0_0_10px_rgba(124,58,237,0.4)]">
+            <div className="flex items-center gap-2.5">
+              <div className="w-9 h-9 bg-brand-600 rounded-xl flex items-center justify-center shadow-[0_0_12px_rgba(124,58,237,0.3)]">
                 <MapPin className="h-4 w-4 text-white" />
               </div>
-              <span className="text-lg font-bold" style={{ color: 'var(--fg)' }}>
+              <span className="text-lg font-bold" style={{ color: 'var(--text-primary)' }}>
                 Vibe<span className="text-brand-500">Spot</span>
               </span>
             </div>
-            <p className="text-sm leading-relaxed max-w-xs" style={{ color: 'var(--muted)' }}>
-              Dhaka's community-powered platform for discovering the best venues, events, and hidden gems — curated by locals, for locals.
+            <p className="text-sm leading-relaxed max-w-xs" style={{ color: 'var(--text-muted)' }}>
+              Dhaka's community-powered platform for discovering the best places, events, and hidden gems — curated by locals, for locals.
             </p>
             {/* Social Links */}
             <div className="flex items-center gap-3 pt-2">
@@ -82,8 +82,8 @@ export default function Footer() {
                     target="_blank"
                     rel="noopener noreferrer"
                     aria-label={label}
-                    className="w-9 h-9 rounded-lg border flex items-center justify-center hover:border-brand-500 hover:text-brand-500 transition-all duration-200"
-                    style={{ borderColor: 'var(--card-border)', color: 'var(--muted)' }}
+                    className="w-10 h-10 rounded-xl flex items-center justify-center hover:text-brand-400 transition-all duration-200"
+                    style={{ backgroundColor: 'var(--bg-elevated)', color: 'var(--text-muted)' }}
                   >
                     <Icon className="h-4 w-4" />
                   </a>
@@ -95,7 +95,7 @@ export default function Footer() {
           {/* Link columns */}
           {Object.entries(footerLinks).map(([title, links]) => (
             <div key={title} className="space-y-4">
-              <h4 className="text-sm font-semibold uppercase tracking-widest" style={{ color: 'var(--fg)' }}>
+              <h4 className="text-sm font-semibold uppercase tracking-widest" style={{ color: 'var(--text-primary)' }}>
                 {title}
               </h4>
               <ul className="space-y-3">
@@ -103,8 +103,8 @@ export default function Footer() {
                   <li key={link.label}>
                     <Link
                       href={link.href}
-                      className="text-sm hover:text-brand-500 transition-colors duration-200"
-                      style={{ color: 'var(--muted)' }}
+                      className="text-sm hover:text-brand-400 transition-colors duration-200"
+                      style={{ color: 'var(--text-muted)' }}
                     >
                       {link.label}
                     </Link>
@@ -116,11 +116,11 @@ export default function Footer() {
         </div>
 
         {/* Bottom bar */}
-        <div className="mt-14 pt-8 border-t flex flex-col sm:flex-row items-center justify-between gap-4" style={{ borderColor: 'var(--card-border)' }}>
-          <p className="text-xs" style={{ color: 'var(--muted)' }}>
+        <div className="mt-14 pt-8 flex flex-col sm:flex-row items-center justify-between gap-4" style={{ borderTop: '1px solid var(--border)' }}>
+          <p className="text-xs" style={{ color: 'var(--text-muted)' }}>
             &copy; {new Date().getFullYear()} VibeSpot Technologies Ltd. All rights reserved. Dhaka, Bangladesh.
           </p>
-          <div className="flex items-center gap-1 text-xs" style={{ color: 'var(--muted)' }}>
+          <div className="flex items-center gap-1 text-xs" style={{ color: 'var(--text-muted)' }}>
             <span>Serving</span>
             <span className="text-brand-500 font-semibold mx-1">DNCC &amp; DSCC</span>
             <span>— Phase 1</span>
