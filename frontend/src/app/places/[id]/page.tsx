@@ -60,6 +60,18 @@ export default async function PlaceDetail({ params }: { params: Promise<{ id: st
   } catch {
     tags = [];
   }
+  
+  // Parse operating hours safely
+  let operatingHours: Record<string, string> = {};
+  try {
+    if (typeof place.operating_hours === 'string') {
+      operatingHours = JSON.parse(place.operating_hours);
+    } else {
+      operatingHours = place.operating_hours || {};
+    }
+  } catch {
+    operatingHours = {};
+  }
 
   return (
     <div className="pb-24">
@@ -184,9 +196,16 @@ export default async function PlaceDetail({ params }: { params: Promise<{ id: st
                 </li>
                 <li className="flex justify-between items-center text-sm">
                   <span style={{ color: 'var(--text-muted)' }}>Budget</span>
-                  <span className="text-brand-400 font-extrabold text-base tracking-widest px-3 py-1.5 rounded-xl" style={{ backgroundColor: 'var(--bg-card)' }}>
-                    {place.budget_tier || '$$$'}
-                  </span>
+                  <div className="flex flex-col items-end gap-1">
+                    <span className="text-brand-400 font-extrabold text-base tracking-widest px-3 py-1.5 rounded-xl block" style={{ backgroundColor: 'var(--bg-card)' }}>
+                      {place.budget_tier || '$$$'}
+                    </span>
+                    {place.budget_label && (
+                      <span className="text-[10px] font-bold uppercase" style={{ color: 'var(--text-muted)' }}>
+                        {place.budget_label} {place.budget_range && place.budget_range !== '0-0' && `(৳${place.budget_range})`}
+                      </span>
+                    )}
+                  </div>
                 </li>
                 <li className="flex justify-between items-center text-sm">
                   <span style={{ color: 'var(--text-muted)' }}>Rating</span>
@@ -198,6 +217,27 @@ export default async function PlaceDetail({ params }: { params: Promise<{ id: st
                     <span className="text-xs" style={{ color: 'var(--text-muted)' }}>({place.total_reviews} reviews)</span>
                   </div>
                 </li>
+                
+                {/* Operating Hours */}
+                {Object.keys(operatingHours).length > 0 && (
+                  <li className="pt-4 space-y-3" style={{ borderTop: '1px solid var(--border)' }}>
+                    <p className="text-sm font-bold flex items-center justify-between" style={{ color: 'var(--text-primary)' }}>
+                      Operating Hours
+                      <Clock className="h-3.5 w-3.5 text-brand-500" />
+                    </p>
+                    <div className="space-y-1.5">
+                      {['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'].map(day => (
+                        <div key={day} className="flex justify-between text-[11px] font-medium">
+                          <span style={{ color: 'var(--text-muted)' }}>{day}</span>
+                          <span style={{ color: operatingHours[day]?.includes('Closed') ? 'var(--text-error, #f87171)' : 'var(--text-primary)' }}>
+                            {operatingHours[day] || 'N/A'}
+                          </span>
+                        </div>
+                      ))}
+                    </div>
+                  </li>
+                )}
+
                 <li className="pt-4 text-center" style={{ borderTop: '1px solid var(--border)' }}>
                   <p className="text-sm mb-1" style={{ color: 'var(--text-muted)' }}>Full Address</p>
                   <p className="text-base leading-relaxed" style={{ color: 'var(--text-primary)' }}>{place.address}</p>

@@ -24,6 +24,8 @@ class Place extends Model
         'operating_hours',
         'tags',
         'budget_tier',
+        'budget_label',
+        'budget_range',
         'average_rating',
         'total_reviews',
         'is_published',

@@ -4,9 +4,9 @@ const categories = [
   { label: 'Food & Drinks', emoji: '🍜', href: '/places?category=Food+%26+Drinks' },
   { label: 'Entertainment', emoji: '🎭', href: '/places?category=Entertainment' },
   { label: 'Culture',        emoji: '🎨', href: '/places?category=Culture'        },
-  { label: 'Heritage',       emoji: '🏛️', href: '/places?category=Heritage'       },
+  { label: 'Landmarks & Heritage', emoji: '🏛️', href: '/places?category=Landmarks+%26+Heritage' },
   { label: 'Outdoors',       emoji: '🌿', href: '/places?category=Outdoors'       },
-  { label: 'Cinema',         emoji: '🎬', href: '/places?category=Cinema'         },
+  { label: 'Cinema & Screenings',   emoji: '🎬', href: '/places?category=Cinema+%26+Screenings' },
   { label: 'Shopping',       emoji: '🛍️', href: '/places?category=Shopping'       },
 ];
 

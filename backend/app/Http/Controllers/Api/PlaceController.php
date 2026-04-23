@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Models\Place;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class PlaceController extends Controller
 {
@@ -35,7 +36,7 @@ class PlaceController extends Controller
             $query->orderBy('created_at', 'desc');
         }
 
-        $places = $query->paginate(12);
+        $places = $query->paginate(60);
             
         return response()->json([
             'status' => 'success',
@@ -71,7 +72,7 @@ class PlaceController extends Controller
     public function stats()
     {
         $categoryCounts = Place::where('is_published', true)
-            ->select('category', \DB::raw('count(*) as count'))
+            ->select('category', DB::raw('count(*) as count'))
             ->groupBy('category')
             ->pluck('count', 'category');
 

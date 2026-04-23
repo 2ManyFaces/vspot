@@ -121,11 +121,9 @@ export default function ProfilePage() {
         formData.append("profile_photo", selectedFile);
       }
       
-      // Need at least one field to submit
-      formData.append("_method", "PATCH"); // Laravel handles multipart PATCH via _method
-
+      // No _method spoofing needed anymore as backend is POST
       const res = await fetch("http://127.0.0.1:8000/api/profile", {
-        method: "POST", // using POST due to _method spoofing for FormData
+        method: "POST",
         headers: {
           "Authorization": `Bearer ${token}`,
           "Accept": "application/json"
@@ -138,8 +136,8 @@ export default function ProfilePage() {
       if (res.ok) {
         setIsEditing(false);
         // Refresh global user state carefully merging updated info. 
-        // Token has not changed, we just update context.
         if (token) login(token, data.data, "user"); 
+        setSelectedFile(null); // Clear selected file after success
       } else {
         setError(data.message || "Failed to update profile.");
       }
